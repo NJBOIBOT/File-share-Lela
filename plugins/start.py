@@ -77,25 +77,26 @@ async def start_command(client: Client, message: Message):
                 current = await db.get_verify_count(id)
                 await db.set_verify_count(id, current + 1)
 
-    # 👇👇👇 Yeh part handle karega base64 parameter sahi se
+    # 👇 Recover original base64 ID
     start_param = ""
     if len(message.command) > 1:
         param = message.command[1]
         if param.startswith("verify_"):
             encoded_base64 = param.replace("verify_", "")
-            # fix base64 padding if needed
             missing_padding = len(encoded_base64) % 4
             if missing_padding:
                 encoded_base64 += '=' * (4 - missing_padding)
             start_param = f"?start={encoded_base64}"
 
-    # 👇 inline button
     file_button = InlineKeyboardMarkup([
         [InlineKeyboardButton("📁 Get File", url=f"https://t.me/{client.username}{start_param}")]
     ])
 
     return await message.reply(
-        f"✅ Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}.\n\n<b>What is Token?</b>\n<blockquote>This is an ad token. Clicking and viewing 1 ad gives you 12 hours of access to the bot.</blockquote>\n\nClick the button below to access your file 👇",
+        f"✅ Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}.\n\n"
+        f"<b>What is Token?</b>\n"
+        f"<blockquote>This is an ad token. Clicking and viewing 1 ad gives you 12 hours of access to the bot.</blockquote>\n\n"
+        f"Click the button below to access your file 👇",
         reply_markup=file_button,
         parse_mode=ParseMode.HTML,
         protect_content=False,
