@@ -482,3 +482,62 @@ async def total_verify_count_cmd(client, message: Message):
 async def bcmd(bot: Bot, message: Message):        
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("• ᴄʟᴏsᴇ •", callback_data = "close")]])
     await message.reply(text=CMD_TXT, reply_markup = reply_markup, quote= True)
+
+# ======================= CALLBACK QUERY HANDLER =======================
+
+@Bot.on_callback_query()
+async def handle_callback(client, callback_query: CallbackQuery):
+    data = callback_query.data
+
+    if data == "about":
+        await callback_query.message.edit(
+            text="<b>About:</b>\n\nThis bot is made by @Mrxonfiree.\nContact @Mrxonfiree for help or issues.",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]]
+            ),
+            parse_mode=ParseMode.HTML
+        )
+
+    elif data == "help":
+        await callback_query.message.edit(
+            text="<b>Help:</b>\n\nTo use this bot, just send me a link or press the buttons below.\nUse /myplan to check your Premium Status.",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]]
+            ),
+            parse_mode=ParseMode.HTML
+        )
+
+    elif data == "premium":
+        await callback_query.message.edit(
+            text="<b>Premium Plan:</b>\n\nUnlock all features by upgrading to premium.\nContact @Mrxonfiree to purchase.",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]]
+            ),
+            parse_mode=ParseMode.HTML
+        )
+
+    elif data == "back":
+        await callback_query.message.edit(
+            text=START_MSG.format(
+                first=callback_query.from_user.first_name,
+                last=callback_query.from_user.last_name,
+                username='@' + callback_query.from_user.username if callback_query.from_user.username else None,
+                mention=callback_query.from_user.mention,
+                id=callback_query.from_user.id
+            ),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton('🤤 Jᴏɪɴ Aᴅᴜʟᴛ Hᴜʙ', url='https://t.me/+oOvo2Un_OC4xNWIx')],
+                [
+                    InlineKeyboardButton('🍿 Mᴏᴠɪᴇ ɢʀᴏᴜᴘ', url='https://t.me/MovieRequestGroupNj'),
+                    InlineKeyboardButton('🤖 ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ', url='https://t.me/unfiltered_stuf')
+                ],
+                [
+                    InlineKeyboardButton('💁‍♀️ ʜᴇʟᴘ', callback_data='help'),
+                    InlineKeyboardButton('😊 ᴀʙᴏᴜᴛ', callback_data='about')
+                ]
+            ]),
+            parse_mode=ParseMode.HTML
+        )
+
+    elif data == "close":
+        await callback_query.message.delete()
