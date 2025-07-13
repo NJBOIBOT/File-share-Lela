@@ -68,7 +68,7 @@ async def start_command(client: Client, message: Message):
         if SHORTLINK_URL or SHORTLINK_API:
             if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
                 await db.update_verify_status(user_id, is_verified=False)
-            if "verify_" in message.text:
+            if "verify_" in message.text and not verify_status["is_verified"]:
                 _, token = message.text.split("_", 1)
                 if verify_status['verify_token'] != token:
                    return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
