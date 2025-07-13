@@ -68,35 +68,38 @@ async def start_command(client: Client, message: Message):
         if SHORTLINK_URL or SHORTLINK_API:
             if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
                 await db.update_verify_status(user_id, is_verified=False)
-
             if "verify_" in message.text:
                 _, token = message.text.split("_", 1)
                 if verify_status['verify_token'] != token:
-                    return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
+                   return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
                 await db.update_verify_status(id, is_verified=True, verified_time=time.time())
-                
+    
                 current = await db.get_verify_count(id)
                 await db.set_verify_count(id, current + 1)
-                if verify_status["link"] == "":
-                    reply_markup = None
+
+                start_param = f"?start={message.command[1]}" if len(message.command) > 1 else ""
+                file_button = InlineKeyboardMarkup([
+                [InlineKeyboardButton("📁 Get File", url=f"https://t.me/{client.username}{start_param}")]
+                ])
+
                 return await message.reply(
-                    f"Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}",
-                    reply_markup=reply_markup,
-                    protect_content=False,
-                    quote=True
-                )
+                f"✅ Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}.\n\nClick the button below to access your file 👇",
+                reply_markup=file_button,
+                protect_content=False,
+                quote=True
+           )
 
             if not verify_status['is_verified'] and not is_premium:
                 token = ''.join(random.choices(rohit.ascii_letters + rohit.digits, k=10))
                 await db.update_verify_status(id, verify_token=token, link="")
                 link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, f'https://telegram.dog/{client.username}?start=verify_{token}')
                 btn = [
-                    [InlineKeyboardButton("• ᴏᴘᴇɴ ʟɪɴᴋ •", url=link), 
-                    InlineKeyboardButton('• ᴛᴜᴛᴏʀɪᴀʟ •', url=TUT_VID)],
-                    [InlineKeyboardButton('• ʙᴜʏ ᴘʀᴇᴍɪᴜᴍ •', callback_data='premium')]
+                    [InlineKeyboardButton("Vᴇʀɪꜰʏ 🔑", url=link), 
+                    InlineKeyboardButton('Hᴏᴡ ᴛᴏ vᴇʀɪꜰʏ ❓', url=TUT_VID)],
+                    [InlineKeyboardButton('Bᴜʏ Pʀᴇᴍɪᴜᴍ 💸', callback_data='premium')]
                 ]
                 return await message.reply(
-                    f"𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝗵𝗮𝘀 𝗲𝘅𝗽𝗶𝗿𝗲𝗱. 𝗣𝗹𝗲𝗮𝘀𝗲 𝗿𝗲𝗳𝗿𝗲𝘀𝗵 𝘆𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘁𝗼 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗲..\n\n<b>Tᴏᴋᴇɴ Tɪᴍᴇᴏᴜᴛ:</b> {get_exp_time(VERIFY_EXPIRE)}\n\n<b>ᴡʜᴀᴛ ɪs ᴛʜᴇ ᴛᴏᴋᴇɴ??</b>\n\nᴛʜɪs ɪs ᴀɴ ᴀᴅs ᴛᴏᴋᴇɴ. ᴘᴀssɪɴɢ ᴏɴᴇ ᴀᴅ ᴀʟʟᴏᴡs ʏᴏᴜ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ ғᴏʀ {get_exp_time(VERIFY_EXPIRE)}</b>",
+                    f"𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝗵𝗮𝘀 𝗲𝘅𝗽𝗶𝗿𝗲𝗱. 𝗣𝗹𝗲𝗮𝘀𝗲 𝗿𝗲𝗳𝗿𝗲𝘀𝗵 𝘆𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘁𝗼 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗲..\n\n<b>Tᴏᴋᴇɴ Tɪᴍᴇᴏᴜᴛ:</b> {get_exp_time(VERIFY_EXPIRE)}\n\n<b><blockquote>ᴡʜᴀᴛ ɪs ᴛʜᴇ ᴛᴏᴋᴇɴ? ⏳</b><blockquote>\n\nᴛʜɪs ɪs ᴀɴ ᴀᴅs ᴛᴏᴋᴇɴ. ᴘᴀssɪɴɢ ᴏɴᴇ ᴀᴅ ᴀʟʟᴏᴡs ʏᴏᴜ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ ғᴏʀ {get_exp_time(VERIFY_EXPIRE)}</b>",
                     reply_markup=InlineKeyboardMarkup(btn),
                     protect_content=False,
                     quote=True
@@ -491,7 +494,7 @@ async def handle_callback(client, callback_query: CallbackQuery):
 
     if data == "about":
         await callback_query.message.edit(
-            text="<b>About:</b>\n\nThis bot is made by @Mrxonfiree.\nContact @Mrxonfiree for help or issues.",
+            text="<b><blockquote>◈ ᴄʀᴇᴀᴛᴏʀ: <a href=https://t.me/Mrxonfiree>Mʀxᴏɴꜰɪʀᴇ</a>\n◈ ꜰᴏᴜɴᴅᴇʀ ᴏꜰ : <a href=https://t.me/LanaMiaRose_Bot>Aᴅᴜʟᴛ ʜuʙ</a>\n◈ Mᴏᴠɪᴇ Gʀᴏᴜᴘ : <a href=https://t.me/MovierequestgroupNj>Mᴏᴠɪᴇ Gʀᴏᴜᴘ</a>\n◈ Bᴀᴄᴋᴜᴘ Cʜᴀɴɴᴇʟ : <a href=https://t.me/unfiltered_stuf>Uɴғɪʟᴛᴇʀᴇᴅ Aᴅᴜʟᴛ</a>\n◈ ᴅᴇᴠᴇʟᴏᴘᴇʀ : <a href=https://t.me/Mrxonfiree>ᴹᴿˣ ᴮᴼᵀᶻ</a></blockquote></b>",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]]
             ),
@@ -500,7 +503,7 @@ async def handle_callback(client, callback_query: CallbackQuery):
 
     elif data == "help":
         await callback_query.message.edit(
-            text="<b>Help:</b>\n\nTo use this bot, just send me a link or press the buttons below.\nUse /myplan to check your Premium Status.",
+            text="<b><blockquote>Tʜɪs ɪs Aɴ Pʀɪᴠᴀᴛᴇ Fɪʟᴇ Sᴛᴏʀᴇ Bᴏᴛ Wᴏʀᴋ Fᴏʀ @ᴜɴғɪʟᴛᴇʀᴇᴅ_sᴛᴜғ\n\n❏ ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs\n├/start : sᴛᴀʀᴛ ᴛʜᴇ ʙᴏᴛ\n├/about : ᴏᴜʀ Iɴғᴏʀᴍᴀᴛɪᴏɴ\n└/help : ʜᴇʟᴘ ʀᴇʟᴀᴛᴇᴅ ʙᴏᴛ\n\n sɪᴍᴘʟʏ ᴄʟɪᴄᴋ ᴏɴ ʟɪɴᴋ ᴀɴᴅ sᴛᴀʀᴛ ᴛʜᴇ ʙᴏᴛ ᴊᴏɪɴ ʙᴏᴛʜ ᴄʜᴀɴɴᴇʟs ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ ᴛʜᴀᴛs ɪᴛ.....!\n\n ᴅᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ <a href=https://t.me/Mrxonfiree>Mʀxᴏɴꜰɪʀᴇ</a></blockquote></b>",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]]
             ),
@@ -509,7 +512,7 @@ async def handle_callback(client, callback_query: CallbackQuery):
 
     elif data == "premium":
         await callback_query.message.edit(
-            text="<b>Premium Plan:</b>\n\nUnlock all features by upgrading to premium.\nContact @Mrxonfiree to purchase.",
+            text="<b>Premium Plan:</b>\n\nUɴʟᴏᴄᴋ ᴀʟʟ ꜰᴇᴀᴛᴜʀᴇs ʙʏ ᴜᴘɢʀᴀᴅɪɴɢ ᴛᴏ ᴘʀᴇᴍɪᴜᴍ.\ncᴏɴᴛᴀᴄᴛ @Mrxonfiree ᴛᴏ ᴘᴜʀᴄʜᴀsᴇ.",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]]
             ),
