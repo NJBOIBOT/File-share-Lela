@@ -69,15 +69,15 @@ async def start_command(client: Client, message: Message):
             if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
                 await db.update_verify_status(user_id, is_verified=False)
             if "verify_" in message.text and not verify_status["is_verified"]:
-                _, token = message.text.split("_", 1)
-                if verify_status['verify_token'] != token:
-                   return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
+    _, token = message.text.split("_", 1)
+    if verify_status['verify_token'] != token:
+        return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
 
-                await db.update_verify_status(id, is_verified=True, verified_time=time.time())
-                current = await db.get_verify_count(id)
-                await db.set_verify_count(id, current + 1)
+    await db.update_verify_status(id, is_verified=True, verified_time=time.time())
+    current = await db.get_verify_count(id)
+    await db.set_verify_count(id, current + 1)
 
-    # 👇 Recover original base64 ID
+    # 🔓 Clean and safe base64 param extraction
     start_param = ""
     if len(message.command) > 1:
         param = message.command[1]
@@ -91,6 +91,17 @@ async def start_command(client: Client, message: Message):
     file_button = InlineKeyboardMarkup([
         [InlineKeyboardButton("📁 Get File", url=f"https://t.me/{client.username}{start_param}")]
     ])
+
+    return await message.reply(
+        f"✅ Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}.\n\n"
+        f"<b>What is Token?</b>\n"
+        f"<blockquote>This is an ad token. Clicking and viewing 1 ad gives you 12 hours of access to the bot.</blockquote>\n\n"
+        f"Click the button below to access your file 👇",
+        reply_markup=file_button,
+        parse_mode=ParseMode.HTML,
+        protect_content=False,
+        quote=True
+    )
 
     return await message.reply(
         f"✅ Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}.\n\n"
