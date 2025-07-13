@@ -72,22 +72,35 @@ async def start_command(client: Client, message: Message):
                 _, token = message.text.split("_", 1)
                 if verify_status['verify_token'] != token:
                    return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
+
                 await db.update_verify_status(id, is_verified=True, verified_time=time.time())
-    
                 current = await db.get_verify_count(id)
                 await db.set_verify_count(id, current + 1)
 
-                start_param = f"?start={message.command[1]}" if len(message.command) > 1 else ""
-                file_button = InlineKeyboardMarkup([
-                [InlineKeyboardButton("📁 Get File", url=f"https://t.me/{client.username}{start_param}")]
-                ])
+    # 👇👇👇 Yeh part handle karega base64 parameter sahi se
+    start_param = ""
+    if len(message.command) > 1:
+        param = message.command[1]
+        if param.startswith("verify_"):
+            encoded_base64 = param.replace("verify_", "")
+            # fix base64 padding if needed
+            missing_padding = len(encoded_base64) % 4
+            if missing_padding:
+                encoded_base64 += '=' * (4 - missing_padding)
+            start_param = f"?start={encoded_base64}"
 
-                return await message.reply(
-                f"✅ Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}.\n\nClick the button below to access your file 👇",
-                reply_markup=file_button,
-                protect_content=False,
-                quote=True
-           )
+    # 👇 inline button
+    file_button = InlineKeyboardMarkup([
+        [InlineKeyboardButton("📁 Get File", url=f"https://t.me/{client.username}{start_param}")]
+    ])
+
+    return await message.reply(
+        f"✅ Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}.\n\n<b>What is Token?</b>\n<blockquote>This is an ad token. Clicking and viewing 1 ad gives you 12 hours of access to the bot.</blockquote>\n\nClick the button below to access your file 👇",
+        reply_markup=file_button,
+        parse_mode=ParseMode.HTML,
+        protect_content=False,
+        quote=True
+    )
 
             if not verify_status['is_verified'] and not is_premium:
                 token = ''.join(random.choices(rohit.ascii_letters + rohit.digits, k=10))
