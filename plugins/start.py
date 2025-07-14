@@ -125,16 +125,16 @@ async def start_command(client: Client, message: Message):
                 )
                 btn = [
                     [
-                        InlineKeyboardButton(&quot;Vᴇʀɪꜰʏ 🔑&quot;, url=link),
-                        InlineKeyboardButton(&quot;Hᴏᴡ ᴛᴏ vᴇʀɪꜰʏ ❓&quot;, url=TUT_VID)
+                        InlineKeyboardButton("Vᴇʀɪꜰʏ 🔑", url=link),
+                        InlineKeyboardButton("Hᴏᴡ ᴛᴏ vᴇʀɪꜰʏ ❓", url=TUT_VID)
                     ],
-                    [InlineKeyboardButton(&quot;Bᴜʏ Pʀᴇᴍɪᴜᴍ 💸&quot;, callback_data=&quot;premium&quot;)]
+                    [InlineKeyboardButton("Bᴜʏ Pʀᴇᴍɪᴜᴍ 💸", callback_data="premium")]
                 ]
                 return await message.reply(
-                    f&quot;𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝗵𝗮𝘀 𝗲𝘅𝗽𝗶𝗿𝗲𝗱. 𝗣𝗹𝗲𝗮𝘀𝗲 𝗿𝗲𝗳𝗿𝗲𝘀𝗵 𝘆𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘁𝗼 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗲..\n\n&quot;
-                    f&quot;<b>Tᴏᴋᴇɴ Tɪᴍᴇᴏᴜᴛ:</b> {get_exp_time(VERIFY_EXPIRE)}\n\n&quot;
-                    f&quot;<b><blockquote>ᴡʜᴀᴛ ɪs ᴛʜᴇ ᴛᴏᴋᴇɴ? ⏳</b><blockquote>\n\n&quot;
-                    f&quot;ᴛʜɪs ɪs ᴀɴ ᴀᴅs ᴛᴏᴋᴇɴ. ᴘᴀssɪɴɢ ᴏɴᴇ ᴀᴅ ᴀʟʟᴏᴡs ʏᴏᴜ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ ғᴏʀ {get_exp_time(VERIFY_EXPIRE)}</b>&quot;,
+                    f"𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝗵𝗮𝘀 𝗲𝘅𝗽𝗶𝗿𝗲𝗱. 𝗣𝗹𝗲𝗮𝘀𝗲 𝗿𝗲𝗳𝗿𝗲𝘀𝗵 𝘆𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘁𝗼 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗲..\n\n"
+                    f"<b>Tᴏᴋᴇɴ Tɪᴍᴇᴏᴜᴛ:</b> {get_exp_time(VERIFY_EXPIRE)}\n\n"
+                    f"<b><blockquote>ᴡʜᴀᴛ ɪs ᴛʜᴇ ᴛᴏᴋᴇɴ? ⏳</b><blockquote>\n\n"
+                    f"ᴛʜɪs ɪs ᴀɴ ᴀᴅs ᴛᴏᴋᴇɴ. ᴘᴀssɪɴɢ ᴏɴᴇ ᴀᴅ ᴀʟʟᴏᴡs ʏᴏᴜ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ ғᴏʀ {get_exp_time(VERIFY_EXPIRE)}</b>",
                     reply_markup=InlineKeyboardMarkup(btn),
                     protect_content=False,
                     quote=True
