@@ -82,7 +82,7 @@ async def start_command(client: Client, message: Message):
     # 🔓 Clean and safe base64 param extraction
 @Bot.on_message(filters.command('start') & filters.private)
 async def start_command(client: Client, message: Message):
-    start_param = &quot;&quot;
+    start_param = ""
     if len(message.command) > 1:
         pass
     user_id = message.from_user.id
@@ -94,7 +94,7 @@ async def start_command(client: Client, message: Message):
         if SHORTLINK_URL or SHORTLINK_API:
             if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
                 await db.update_verify_status(user_id, is_verified=False)
-```python
+                
 @Bot.on_message(filters.command('start') & filters.private)
 async def start_command(client: Client, message: Message):
     user_id = message.from_user.id
@@ -140,9 +140,6 @@ async def start_command(client: Client, message: Message):
                     protect_content=False,
                     quote=True
                 )
-```
-    # Continue your function with other logic (subscription check, file delivery, etc.)
-    # Be sure those are aligned properly too
 
     # ✅ Check Force Subscription
     if not await is_subscribed(client, user_id):
