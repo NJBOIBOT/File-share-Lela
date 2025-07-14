@@ -66,18 +66,22 @@ async def start_command(client: Client, message: Message):
 
         # If TOKEN is enabled, handle verification logic
         if SHORTLINK_URL or SHORTLINK_API:
-            if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
-                await db.update_verify_status(user_id, is_verified=False)
-            if "verify_" in message.text and not verify_status['is_verified']:
-                try:
-                    _, token = message.text.split("_", 1)
-                    if verify_status['verify_token'] != token:
-                       return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
-                    await db.update_verify_status(id, is_verified=True, verified_time=time.time())
-                    current = await db.get_verify_count(id)
-                    await db.set_verify_count(id, current + 1)
-                except Exception as e:
-                    return await message.reply("Invalid token format. Please click /start and try again.")
+           if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
+              await db.update_verify_status(user_id, is_verified=False)
+           if "verify_" in message.text and not verify_status['is_verified']:
+               try:
+                   _, token = message.text.split("_", 1)
+               if verify_status['verify_token'] != token:
+                  return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
+               await db.update_verify_status(id, is_verified=True, verified_time=time.time())
+               current = await db.get_verify_count(id)
+               await db.set_verify_count(id, current + 1)
+           except Exception as e:
+               return await message.reply("Invalid token format. Please click /start and try again.")
+        
+    # ⛔ PROBLEM LINE - Must be aligned properly like this
+    if not verify_status['is_verified'] and not is_premium:
+        return await message.reply("You need to verify before using this bot. Click /start.")
 
     # 🔓 Clean and safe base64 param extraction
     start_param = ""
