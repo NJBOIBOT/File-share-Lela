@@ -114,20 +114,53 @@ async def start_command(client: Client, message: Message):
         if SHORTLINK_URL or SHORTLINK_API:
             if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
                 await db.update_verify_status(user_id, is_verified=False)
-            if "verify_" in message.text and not verify_status['is_verified']:
+```python
+@Bot.on_message(filters.command('start') & filters.private)
+async def start_command(client: Client, message: Message):
+    user_id = message.from_user.id
+    id = message.from_user.id
+    is_premium = await is_premium_user(id)
+
+    # Check if user is banned
+    banned_users = await db.get_ban_users()
+    if user_id in banned_users:
+        return await message.reply_text(
+            &quot;<b>⛔️ You are Bᴀɴɴᴇᴅ from using this bot.</b>\n\n&quot;
+            &quot;<i>Contact support if you think this is a mistake.</i>&quot;,
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton(&quot;Contact Support&quot;, url=BAN_SUPPORT)]]
+            )
+        )
+
+    # Check if user is admin
+    if user_id in await db.get_all_admins():
+        verify_status = {
+            'is_verified': True,
+            'verify_token': None,
+            'verified_time': time.time(),
+            'link': &quot;&quot;
+        }
+    else:
+        verify_status = await db.get_verify_status(id)
+
+        # Token verification
+        if SHORTLINK_URL or SHORTLINK_API:
+            if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
+                await db.update_verify_status(user_id, is_verified=False)
+            if &quot;verify_&quot; in message.text and not verify_status['is_verified']:
                 try:
-                    _, token = message.text.split("_", 1)
+                    _, token = message.text.split(&quot;_&quot;, 1)
                     if verify_status['verify_token'] != token:
-                        return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
+                        return await message.reply(&quot;Your token is invalid or expired. Try again by clicking /start.&quot;)
                     await db.update_verify_status(id, is_verified=True, verified_time=time.time())
                     current = await db.get_verify_count(id)
                     await db.set_verify_count(id, current + 1)
                 except Exception:
-                    return await message.reply("Invalid token format. Please click /start and try again.")
+                    return await message.reply(&quot;Invalid token format. Please click /start and try again.&quot;)
 
             if not verify_status['is_verified'] and not is_premium:
                 token = ''.join(random.choices(rohit.ascii_letters + rohit.digits, k=10))
-                await db.update_verify_status(id, verify_token=token, link="")
+                await db.update_verify_status(id, verify_token=token, link=&quot;&quot;)
                 link = await get_shortlink(
                     SHORTLINK_URL,
                     SHORTLINK_API,
@@ -135,21 +168,21 @@ async def start_command(client: Client, message: Message):
                 )
                 btn = [
                     [
-                        InlineKeyboardButton("Vᴇʀɪꜰʏ 🔑", url=link),
-                        InlineKeyboardButton("Hᴏᴡ ᴛᴏ vᴇʀɪꜰʏ ❓", url=TUT_VID)
+                        InlineKeyboardButton(&quot;Vᴇʀɪꜰʏ 🔑&quot;, url=link),
+                        InlineKeyboardButton(&quot;Hᴏᴡ ᴛᴏ vᴇʀɪꜰʏ ❓&quot;, url=TUT_VID)
                     ],
-                    [InlineKeyboardButton("Bᴜʏ Pʀᴇᴍɪᴜᴍ 💸", callback_data="premium")]
+                    [InlineKeyboardButton(&quot;Bᴜʏ Pʀᴇᴍɪᴜᴍ 💸&quot;, callback_data=&quot;premium&quot;)]
                 ]
                 return await message.reply(
-                    f"𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝗵𝗮𝘀 𝗲𝘅𝗽𝗶𝗿𝗲𝗱. 𝗣𝗹𝗲𝗮𝘀𝗲 𝗿𝗲𝗳𝗿𝗲𝘀𝗵 𝘆𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘁𝗼 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗲..\n\n"
-                    f"<b>Tᴏᴋᴇɴ Tɪᴍᴇᴏᴜᴛ:</b> {get_exp_time(VERIFY_EXPIRE)}\n\n"
-                    f"<b><blockquote>ᴡʜᴀᴛ ɪs ᴛʜᴇ ᴛᴏᴋᴇɴ? ⏳</b><blockquote>\n\n"
-                    f"ᴛʜɪs ɪs ᴀɴ ᴀᴅs ᴛᴏᴋᴇɴ. ᴘᴀssɪɴɢ ᴏɴᴇ ᴀᴅ ᴀʟʟᴏᴡs ʏᴏᴜ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ ғᴏʀ {get_exp_time(VERIFY_EXPIRE)}</b>",
+                    f&quot;𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝗵𝗮𝘀 𝗲𝘅𝗽𝗶𝗿𝗲𝗱. 𝗣𝗹𝗲𝗮𝘀𝗲 𝗿𝗲𝗳𝗿𝗲𝘀𝗵 𝘆𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘁𝗼 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗲..\n\n&quot;
+                    f&quot;<b>Tᴏᴋᴇɴ Tɪᴍᴇᴏᴜᴛ:</b> {get_exp_time(VERIFY_EXPIRE)}\n\n&quot;
+                    f&quot;<b><blockquote>ᴡʜᴀᴛ ɪs ᴛʜᴇ ᴛᴏᴋᴇɴ? ⏳</b><blockquote>\n\n&quot;
+                    f&quot;ᴛʜɪs ɪs ᴀɴ ᴀᴅs ᴛᴏᴋᴇɴ. ᴘᴀssɪɴɢ ᴏɴᴇ ᴀᴅ ᴀʟʟᴏᴡs ʏᴏᴜ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ ғᴏʀ {get_exp_time(VERIFY_EXPIRE)}</b>&quot;,
                     reply_markup=InlineKeyboardMarkup(btn),
                     protect_content=False,
                     quote=True
                 )
-
+```
     # Continue your function with other logic (subscription check, file delivery, etc.)
     # Be sure those are aligned properly too
 
