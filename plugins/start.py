@@ -62,7 +62,10 @@ async def callback_handler(client, callback_query: CallbackQuery):
 
     elif data == "about":
     await callback_query.message.edit(
-        text="<b>👑 Aʙᴏᴜᴛ:\n\nI ᴀᴍ ᴀ ᴘʀɪᴠᴀᴛᴇ ꜰɪʟᴇ sᴛᴏʀᴇ ʙᴏᴛ ᴡɪᴛʜ ᴀᴅs & ᴘʀᴇᴍɪᴜᴍ ᴜɴʟᴏᴄᴋ.</b>",
+        text=(
+            "<b>👑 Aʙᴏᴜᴛ:</b>\n\n"
+            "<b>I ᴀᴍ ᴀ ᴘʀɪᴠᴀᴛᴇ ꜰɪʟᴇ sᴛᴏʀᴇ ʙᴏᴛ ᴡɪᴛʜ ᴀᴅs & ᴘʀᴇᴍɪᴜᴍ ᴜɴʟᴏᴄᴋ.</b>"
+        ),
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]
         ]),
