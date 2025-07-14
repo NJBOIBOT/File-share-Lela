@@ -116,21 +116,30 @@ async def start_command(client: Client, message: Message):
         quote=True
     )
 
-            if not verify_status['is_verified'] and not is_premium:
-                token = ''.join(random.choices(rohit.ascii_letters + rohit.digits, k=10))
-                await db.update_verify_status(id, verify_token=token, link="")
-                link = await get_shortlink(SHORTLINK_URL, SHORTLINK_API, f'https://telegram.dog/{client.username}?start=verify_{token}')
-                btn = [
-                    [InlineKeyboardButton("Vᴇʀɪꜰʏ 🔑", url=link), 
-                    InlineKeyboardButton('Hᴏᴡ ᴛᴏ vᴇʀɪꜰʏ ❓', url=TUT_VID)],
-                    [InlineKeyboardButton('Bᴜʏ Pʀᴇᴍɪᴜᴍ 💸', callback_data='premium')]
-                ]
-                return await message.reply(
-                    f"𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝗵𝗮𝘀 𝗲𝘅𝗽𝗶𝗿𝗲𝗱. 𝗣𝗹𝗲𝗮𝘀𝗲 𝗿𝗲𝗳𝗿𝗲𝘀𝗵 𝘆𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘁𝗼 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗲..\n\n<b>Tᴏᴋᴇɴ Tɪᴍᴇᴏᴜᴛ:</b> {get_exp_time(VERIFY_EXPIRE)}\n\n<b><blockquote>ᴡʜᴀᴛ ɪs ᴛʜᴇ ᴛᴏᴋᴇɴ? ⏳</b><blockquote>\n\nᴛʜɪs ɪs ᴀɴ ᴀᴅs ᴛᴏᴋᴇɴ. ᴘᴀssɪɴɢ ᴏɴᴇ ᴀᴅ ᴀʟʟᴏᴡs ʏᴏᴜ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ ғᴏʀ {get_exp_time(VERIFY_EXPIRE)}</b>",
-                    reply_markup=InlineKeyboardMarkup(btn),
-                    protect_content=False,
-                    quote=True
-                )
+     if not verify_status['is_verified'] and not is_premium:
+            token = ''.join(random.choices(rohit.ascii_letters + rohit.digits, k=10))
+            await db.update_verify_status(id, verify_token=token, link="")
+            link = await get_shortlink(
+               SHORTLINK_URL,
+               SHORTLINK_API,
+            f'https://telegram.dog/{client.username}?start=verify_{token}'
+        )
+        btn = [
+            [
+                InlineKeyboardButton("Vᴇʀɪꜰʏ 🔑", url=link),
+                InlineKeyboardButton("Hᴏᴡ ᴛᴏ vᴇʀɪꜰʏ ❓", url=TUT_VID)
+            ],
+            [InlineKeyboardButton("Bᴜʏ Pʀᴇᴍɪᴜᴍ 💸", callback_data="premium")]
+        ]
+        return await message.reply(
+            f"𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝗵𝗮𝘀 𝗲𝘅𝗽𝗶𝗿𝗲𝗱. 𝗣𝗹𝗲𝗮𝘀𝗲 𝗿𝗲𝗳𝗿𝗲𝘀𝗵 𝘆𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘁𝗼 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗲..\n\n"
+            f"<b>Tᴏᴋᴇɴ Tɪᴍᴇᴏᴜᴛ:</b> {get_exp_time(VERIFY_EXPIRE)}\n\n"
+            f"<b><blockquote>ᴡʜᴀᴛ ɪs ᴛʜᴇ ᴛᴏᴋᴇɴ? ⏳</b><blockquote>\n\n"
+            f"ᴛʜɪs ɪs ᴀɴ ᴀᴅs ᴛᴏᴋᴇɴ. ᴘᴀssɪɴɢ ᴏɴᴇ ᴀᴅ ᴀʟʟᴏᴡs ʏᴏᴜ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ ғᴏʀ {get_exp_time(VERIFY_EXPIRE)}</b>",
+            reply_markup=InlineKeyboardMarkup(btn),
+            protect_content=False,
+            quote=True
+        )
 
     # ✅ Check Force Subscription
     if not await is_subscribed(client, user_id):
