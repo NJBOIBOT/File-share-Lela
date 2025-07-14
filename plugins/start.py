@@ -71,13 +71,13 @@ async def start_command(client: Client, message: Message):
            if "verify_" in message.text and not verify_status['is_verified']:
                try:
                    _, token = message.text.split("_", 1)
-               if verify_status['verify_token'] != token:
+                   if verify_status['verify_token'] != token:
                   return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
-               await db.update_verify_status(id, is_verified=True, verified_time=time.time())
-               current = await db.get_verify_count(id)
-               await db.set_verify_count(id, current + 1)
-           except Exception as e:
-               return await message.reply("Invalid token format. Please click /start and try again.")
+                  await db.update_verify_status(id, is_verified=True, verified_time=time.time())
+                  current = await db.get_verify_count(id)
+                  await db.set_verify_count(id, current + 1)
+               except Exception as e:
+                  return await message.reply("Invalid token format. Please click /start and try again.")
         
     # ⛔ PROBLEM LINE - Must be aligned properly like this
     if not verify_status['is_verified'] and not is_premium:
