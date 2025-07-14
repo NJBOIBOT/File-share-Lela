@@ -79,10 +79,6 @@ async def start_command(client: Client, message: Message):
                except Exception as e:
                   return await message.reply("Invalid token format. Please click /start and try again.")
         
-    # ⛔ PROBLEM LINE - Must be aligned properly like this
-    if not verify_status['is_verified'] and not is_premium:
-        return await message.reply("You need to verify before using this bot. Click /start.")
-
     # 🔓 Clean and safe base64 param extraction
     start_param = ""
     if len(message.command) > 1:
