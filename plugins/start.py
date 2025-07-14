@@ -60,9 +60,14 @@ async def start_command(client, message: Message):
 async def callback_handler(client, callback_query: CallbackQuery):
     data = callback_query.data
 
-    if data == "about":
-        await callback_query.message.edit(
-            text="<b>👑 Aʙᴏᴜᴛ:
+    elif data == "about":
+    await callback_query.message.edit(
+        text="<b>👑 Aʙᴏᴜᴛ:\n\nI ᴀᴍ ᴀ ᴘʀɪᴠᴀᴛᴇ ꜰɪʟᴇ sᴛᴏʀᴇ ʙᴏᴛ ᴡɪᴛʜ ᴀᴅs & ᴘʀᴇᴍɪᴜᴍ ᴜɴʟᴏᴄᴋ.</b>",
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]
+        ]),
+        parse_mode=ParseMode.HTML
+    )
 
 I ᴀᴍ ᴀ ᴘʀɪᴠᴀᴛᴇ ꜰɪʟᴇ sᴛᴏʀᴇ ʙᴏᴛ ᴡɪᴛʜ ᴀᴅs & ᴘʀᴇᴍɪᴜᴍ ᴜɴʟᴏᴄᴋ.</b>",
             reply_markup=InlineKeyboardMarkup([
