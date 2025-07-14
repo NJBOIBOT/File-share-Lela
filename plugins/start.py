@@ -88,27 +88,6 @@ async def start_command(client: Client, message: Message):
     id = message.from_user.id
     is_premium = await is_premium_user(id)
 
-    # Check if user is banned
-    banned_users = await db.get_ban_users()
-    if user_id in banned_users:
-        return await message.reply_text(
-            "<b>⛔️ You are Bᴀɴɴᴇᴅ from using this bot.</b>\n\n"
-            "<i>Contact support if you think this is a mistake.</i>",
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("Contact Support", url=BAN_SUPPORT)]]
-            )
-        )
-
-    # Check if user is admin
-    if user_id in await db.get_all_admins():
-        verify_status = {
-            'is_verified': True,
-            'verify_token': None,
-            'verified_time': time.time(),
-            'link': ""
-        }
-    else:
-        verify_status = await db.get_verify_status(id)
 
         # Token verification
         if SHORTLINK_URL or SHORTLINK_API:
@@ -120,28 +99,6 @@ async def start_command(client: Client, message: Message):
     user_id = message.from_user.id
     id = message.from_user.id
     is_premium = await is_premium_user(id)
-
-    # Check if user is banned
-    banned_users = await db.get_ban_users()
-    if user_id in banned_users:
-        return await message.reply_text(
-            &quot;<b>⛔️ You are Bᴀɴɴᴇᴅ from using this bot.</b>\n\n&quot;
-            &quot;<i>Contact support if you think this is a mistake.</i>&quot;,
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton(&quot;Contact Support&quot;, url=BAN_SUPPORT)]]
-            )
-        )
-
-    # Check if user is admin
-    if user_id in await db.get_all_admins():
-        verify_status = {
-            'is_verified': True,
-            'verify_token': None,
-            'verified_time': time.time(),
-            'link': &quot;&quot;
-        }
-    else:
-        verify_status = await db.get_verify_status(id)
 
         # Token verification
         if SHORTLINK_URL or SHORTLINK_API:
