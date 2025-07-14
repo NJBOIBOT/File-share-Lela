@@ -80,10 +80,11 @@ async def start_command(client: Client, message: Message):
                    return await message.reply("Invalid token format. Please click /start and try again.")
         
     # 🔓 Clean and safe base64 param extraction
-    start_param = ""
-    if len(message.command) > 1:
 @Bot.on_message(filters.command('start') & filters.private)
 async def start_command(client: Client, message: Message):
+    start_param = &quot;&quot;
+    if len(message.command) > 1:
+        pass
     user_id = message.from_user.id
     id = message.from_user.id
     is_premium = await is_premium_user(id)
