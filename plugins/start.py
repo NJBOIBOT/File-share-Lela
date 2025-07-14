@@ -208,16 +208,17 @@ async def start_command(client: Client, message: Message):
                 print(f"Error updating notification with 'Get File Again' button: {e}")
     else:
         reply_markup = InlineKeyboardMarkup(
+        [
+            [InlineKeyboardButton('🤤 Jᴏɪɴ Aᴅᴜʟᴛ Hᴜʙ', url='https://t.me/+oOvo2Un_OC4xNWIx')],
             [
-                    [InlineKeyboardButton('🤤 Jᴏɪɴ Aᴅᴜʟᴛ Hᴜʙ', url='https://t.me/+oOvo2Un_OC4xNWIx')],
-
-            ],[
-            InlineKeyboardButton('🍿 Mᴏᴠɪᴇ ɢʀᴏᴜᴘ', url='https://t.me/MovieRequestGroupNj'),
-            InlineKeyboardButton('🤖 ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ', url='https://t.me/unfiltered_stuf')
-            ],[
-            InlineKeyboardButton('💁‍♀️ ʜᴇʟᴘ', callback_data='help'),
-            InlineKeyboardButton('😊 ᴀʙᴏᴜᴛ', callback_data='about')
-            ]]
+                InlineKeyboardButton('🍿 Mᴏᴠɪᴇ ɢʀᴏᴜᴘ', url='https://t.me/MovieRequestGroupNj'),
+                InlineKeyboardButton('🤖 ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ', url='https://t.me/unfiltered_stuf')
+            ],
+            [
+                InlineKeyboardButton('💁‍♀️ ʜᴇʟᴘ', callback_data='help'),
+                InlineKeyboardButton('😊 ᴀʙᴏᴜᴛ', callback_data='about')
+                  ]
+             ]
         )
         await message.reply_photo(
             photo=START_PIC,
@@ -481,3 +482,62 @@ async def total_verify_count_cmd(client, message: Message):
 async def bcmd(bot: Bot, message: Message):        
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("• ᴄʟᴏsᴇ •", callback_data = "close")]])
     await message.reply(text=CMD_TXT, reply_markup = reply_markup, quote= True)
+
+# ======================= CALLBACK QUERY HANDLER =======================
+
+@Bot.on_callback_query()
+async def handle_callback(client, callback_query: CallbackQuery):
+    data = callback_query.data
+
+    if data == "about":
+        await callback_query.message.edit(
+            text="<b><blockquote>◈ ᴄʀᴇᴀᴛᴏʀ: <a href=https://t.me/Mrxonfiree>Mʀxᴏɴꜰɪʀᴇ</a>\n◈ ꜰᴏᴜɴᴅᴇʀ ᴏꜰ : <a href=https://t.me/LanaMiaRose_Bot>Aᴅᴜʟᴛ ʜuʙ</a>\n◈ Mᴏᴠɪᴇ Gʀᴏᴜᴘ : <a href=https://t.me/MovierequestgroupNj>Mᴏᴠɪᴇ Gʀᴏᴜᴘ</a>\n◈ Bᴀᴄᴋᴜᴘ Cʜᴀɴɴᴇʟ : <a href=https://t.me/unfiltered_stuf>Uɴғɪʟᴛᴇʀᴇᴅ Aᴅᴜʟᴛ</a>\n◈ ᴅᴇᴠᴇʟᴏᴘᴇʀ : <a href=https://t.me/Mrxonfiree>ᴹᴿˣ ᴮᴼᵀᶻ</a></blockquote></b>",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]]
+            ),
+            parse_mode=ParseMode.HTML
+        )
+
+    elif data == "help":
+        await callback_query.message.edit(
+            text="<b><blockquote>Tʜɪs ɪs Aɴ Pʀɪᴠᴀᴛᴇ Fɪʟᴇ Sᴛᴏʀᴇ Bᴏᴛ Wᴏʀᴋ Fᴏʀ @ᴜɴғɪʟᴛᴇʀᴇᴅ_sᴛᴜғ\n\n❏ ʙᴏᴛ ᴄᴏᴍᴍᴀɴᴅs\n├/start : sᴛᴀʀᴛ ᴛʜᴇ ʙᴏᴛ\n├/about : ᴏᴜʀ Iɴғᴏʀᴍᴀᴛɪᴏɴ\n└/help : ʜᴇʟᴘ ʀᴇʟᴀᴛᴇᴅ ʙᴏᴛ\n\n sɪᴍᴘʟʏ ᴄʟɪᴄᴋ ᴏɴ ʟɪɴᴋ ᴀɴᴅ sᴛᴀʀᴛ ᴛʜᴇ ʙᴏᴛ ᴊᴏɪɴ ʙᴏᴛʜ ᴄʜᴀɴɴᴇʟs ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ ᴛʜᴀᴛs ɪᴛ.....!\n\n ᴅᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ <a href=https://t.me/Mrxonfiree>Mʀxᴏɴꜰɪʀᴇ</a></blockquote></b>",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]]
+            ),
+            parse_mode=ParseMode.HTML
+        )
+
+    elif data == "premium":
+        await callback_query.message.edit(
+            text="<b>Premium Plan:</b>\n\nUɴʟᴏᴄᴋ ᴀʟʟ ꜰᴇᴀᴛᴜʀᴇs ʙʏ ᴜᴘɢʀᴀᴅɪɴɢ ᴛᴏ ᴘʀᴇᴍɪᴜᴍ.\ncᴏɴᴛᴀᴄᴛ @Mrxonfiree ᴛᴏ ᴘᴜʀᴄʜᴀsᴇ.",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]]
+            ),
+            parse_mode=ParseMode.HTML
+        )
+
+    elif data == "back":
+        await callback_query.message.edit(
+            text=START_MSG.format(
+                first=callback_query.from_user.first_name,
+                last=callback_query.from_user.last_name,
+                username='@' + callback_query.from_user.username if callback_query.from_user.username else None,
+                mention=callback_query.from_user.mention,
+                id=callback_query.from_user.id
+            ),
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton('🤤 Jᴏɪɴ Aᴅᴜʟᴛ Hᴜʙ', url='https://t.me/+oOvo2Un_OC4xNWIx')],
+                [
+                    InlineKeyboardButton('🍿 Mᴏᴠɪᴇ ɢʀᴏᴜᴘ', url='https://t.me/MovieRequestGroupNj'),
+                    InlineKeyboardButton('🤖 ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ', url='https://t.me/unfiltered_stuf')
+                ],
+                [
+                    InlineKeyboardButton('💁‍♀️ ʜᴇʟᴘ', callback_data='help'),
+                    InlineKeyboardButton('😊 ᴀʙᴏᴜᴛ', callback_data='about')
+                ]
+            ]),
+            parse_mode=ParseMode.HTML
+        )
+
+    elif data == "close":
+        await callback_query.message.delete()
