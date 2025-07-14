@@ -82,64 +82,76 @@ async def start_command(client: Client, message: Message):
     # 🔓 Clean and safe base64 param extraction
     start_param = ""
     if len(message.command) > 1:
-        param = message.command[1]
-        if param.startswith("verify_"):
-            encoded_base64 = param.replace("verify_", "")
-            missing_padding = len(encoded_base64) % 4
-            if missing_padding:
-                encoded_base64 += '=' * (4 - missing_padding)
-            start_param = f"?start={encoded_base64}"
+@Bot.on_message(filters.command('start') & filters.private)
+async def start_command(client: Client, message: Message):
+    user_id = message.from_user.id
+    id = message.from_user.id
+    is_premium = await is_premium_user(id)
 
-    file_button = InlineKeyboardMarkup([
-        [InlineKeyboardButton("📁 Get File", url=f"https://t.me/{client.username}{start_param}")]
-    ])
-
-    return await message.reply(
-        f"✅ Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}.\n\n"
-        f"<b>What is Token?</b>\n"
-        f"<blockquote>This is an ad token. Clicking and viewing 1 ad gives you 12 hours of access to the bot.</blockquote>\n\n"
-        f"Click the button below to access your file 👇",
-        reply_markup=file_button,
-        parse_mode=ParseMode.HTML,
-        protect_content=False,
-        quote=True
-    )
-
-    return await message.reply(
-        f"✅ Your token has been successfully verified and is valid for {get_exp_time(VERIFY_EXPIRE)}.\n\n"
-        f"<b>What is Token?</b>\n"
-        f"<blockquote>This is an ad token. Clicking and viewing 1 ad gives you 12 hours of access to the bot.</blockquote>\n\n"
-        f"Click the button below to access your file 👇",
-        reply_markup=file_button,
-        parse_mode=ParseMode.HTML,
-        protect_content=False,
-        quote=True
-    )
-
-     if not verify_status['is_verified'] and not is_premium:
-            token = ''.join(random.choices(rohit.ascii_letters + rohit.digits, k=10))
-            await db.update_verify_status(id, verify_token=token, link="")
-            link = await get_shortlink(
-               SHORTLINK_URL,
-               SHORTLINK_API,
-            f'https://telegram.dog/{client.username}?start=verify_{token}'
+    # Check if user is banned
+    banned_users = await db.get_ban_users()
+    if user_id in banned_users:
+        return await message.reply_text(
+            "<b>⛔️ You are Bᴀɴɴᴇᴅ from using this bot.</b>\n\n"
+            "<i>Contact support if you think this is a mistake.</i>",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("Contact Support", url=BAN_SUPPORT)]]
+            )
         )
-        btn = [
-            [
-                InlineKeyboardButton("Vᴇʀɪꜰʏ 🔑", url=link),
-                InlineKeyboardButton("Hᴏᴡ ᴛᴏ vᴇʀɪꜰʏ ❓", url=TUT_VID)
-            ],
-            [InlineKeyboardButton("Bᴜʏ Pʀᴇᴍɪᴜᴍ 💸", callback_data="premium")]
-        ]
-        return await message.reply(
-            f"𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝗵𝗮𝘀 𝗲𝘅𝗽𝗶𝗿𝗲𝗱. 𝗣𝗹𝗲𝗮𝘀𝗲 𝗿𝗲𝗳𝗿𝗲𝘀𝗵 𝘆𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘁𝗼 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗲..\n\n"
-            f"<b>Tᴏᴋᴇɴ Tɪᴍᴇᴏᴜᴛ:</b> {get_exp_time(VERIFY_EXPIRE)}\n\n"
-            f"<b><blockquote>ᴡʜᴀᴛ ɪs ᴛʜᴇ ᴛᴏᴋᴇɴ? ⏳</b><blockquote>\n\n"
-            f"ᴛʜɪs ɪs ᴀɴ ᴀᴅs ᴛᴏᴋᴇɴ. ᴘᴀssɪɴɢ ᴏɴᴇ ᴀᴅ ᴀʟʟᴏᴡs ʏᴏᴜ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ ғᴏʀ {get_exp_time(VERIFY_EXPIRE)}</b>",
-            reply_markup=InlineKeyboardMarkup(btn),
-            protect_content=False,
-            quote=True
-        )
+
+    # Check if user is admin
+    if user_id in await db.get_all_admins():
+        verify_status = {
+            'is_verified': True,
+            'verify_token': None,
+            'verified_time': time.time(),
+            'link': ""
+        }
+    else:
+        verify_status = await db.get_verify_status(id)
+
+        # Token verification
+        if SHORTLINK_URL or SHORTLINK_API:
+            if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
+                await db.update_verify_status(user_id, is_verified=False)
+            if "verify_" in message.text and not verify_status['is_verified']:
+                try:
+                    _, token = message.text.split("_", 1)
+                    if verify_status['verify_token'] != token:
+                        return await message.reply("Your token is invalid or expired. Try again by clicking /start.")
+                    await db.update_verify_status(id, is_verified=True, verified_time=time.time())
+                    current = await db.get_verify_count(id)
+                    await db.set_verify_count(id, current + 1)
+                except Exception:
+                    return await message.reply("Invalid token format. Please click /start and try again.")
+
+            if not verify_status['is_verified'] and not is_premium:
+                token = ''.join(random.choices(rohit.ascii_letters + rohit.digits, k=10))
+                await db.update_verify_status(id, verify_token=token, link="")
+                link = await get_shortlink(
+                    SHORTLINK_URL,
+                    SHORTLINK_API,
+                    f'https://telegram.dog/{client.username}?start=verify_{token}'
+                )
+                btn = [
+                    [
+                        InlineKeyboardButton("Vᴇʀɪꜰʏ 🔑", url=link),
+                        InlineKeyboardButton("Hᴏᴡ ᴛᴏ vᴇʀɪꜰʏ ❓", url=TUT_VID)
+                    ],
+                    [InlineKeyboardButton("Bᴜʏ Pʀᴇᴍɪᴜᴍ 💸", callback_data="premium")]
+                ]
+                return await message.reply(
+                    f"𝗬𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝗵𝗮𝘀 𝗲𝘅𝗽𝗶𝗿𝗲𝗱. 𝗣𝗹𝗲𝗮𝘀𝗲 𝗿𝗲𝗳𝗿𝗲𝘀𝗵 𝘆𝗼𝘂𝗿 𝘁𝗼𝗸𝗲𝗻 𝘁𝗼 𝗰𝗼𝗻𝘁𝗶𝗻𝘂𝗲..\n\n"
+                    f"<b>Tᴏᴋᴇɴ Tɪᴍᴇᴏᴜᴛ:</b> {get_exp_time(VERIFY_EXPIRE)}\n\n"
+                    f"<b><blockquote>ᴡʜᴀᴛ ɪs ᴛʜᴇ ᴛᴏᴋᴇɴ? ⏳</b><blockquote>\n\n"
+                    f"ᴛʜɪs ɪs ᴀɴ ᴀᴅs ᴛᴏᴋᴇɴ. ᴘᴀssɪɴɢ ᴏɴᴇ ᴀᴅ ᴀʟʟᴏᴡs ʏᴏᴜ ᴛᴏ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ ғᴏʀ {get_exp_time(VERIFY_EXPIRE)}</b>",
+                    reply_markup=InlineKeyboardMarkup(btn),
+                    protect_content=False,
+                    quote=True
+                )
+
+    # Continue your function with other logic (subscription check, file delivery, etc.)
+    # Be sure those are aligned properly too
 
     # ✅ Check Force Subscription
     if not await is_subscribed(client, user_id):
