@@ -76,7 +76,7 @@ async def start_command(client: Client, message: Message):
                     await db.update_verify_status(id, is_verified=True, verified_time=time.time())
                     current = await db.get_verify_count(id)
                     await db.set_verify_count(id, current + 1)
-              except Exception as e:
+                except Exception as e:
                     return await message.reply("Invalid token format. Please click /start and try again.")
 
     # 🔓 Clean and safe base64 param extraction
