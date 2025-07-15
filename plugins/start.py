@@ -43,11 +43,9 @@ def start_keyboard():
         [
             InlineKeyboardButton('💁‍♀️ ʜᴇʟᴘ', callback_data='help'),
             InlineKeyboardButton('😊 ᴀʙᴏᴜᴛ', callback_data='about')
-        ],
-        [InlineKeyboardButton("🚀 Pʀᴇᴍɪᴜᴍ", callback_data='premium')],
-        [InlineKeyboardButton("❌ Cʟᴏsᴇ", callback_data='close')]
-    ])
-
+             ] 
+        ]  
+ )
 
 BAN_SUPPORT = f"{BAN_SUPPORT}"
 TUT_VID = f"{TUT_VID}"
