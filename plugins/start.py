@@ -525,17 +525,20 @@ async def handle_callback(client, callback_query: CallbackQuery):
         )
 
     elif data == "back":
-        await callback_query.message.edit(
-        text=START_MSG.format(
-            first=callback_query.from_user.first_name,
-            last=callback_query.from_user.last_name,
-            username='@' + callback_query.from_user.username if callback_query.from_user.username else None,
-            mention=callback_query.from_user.mention,
-            id=callback_query.from_user.id
-        ),
-        reply_markup=start_keyboard(),
-        parse_mode=ParseMode.HTML
-    )
+        try:
+            await callback_query.message.edit_caption(
+            caption=START_MSG.format(
+                first=callback_query.from_user.first_name,
+                last=callback_query.from_user.last_name,
+                username='@' + callback_query.from_user.username if callback_query.from_user.username else None,
+                mention=callback_query.from_user.mention,
+                id=callback_query.from_user.id
+            ),
+            reply_markup=start_keyboard(),
+            parse_mode=ParseMode.HTML
+           )
+    except Exception as e:
+        print(f"Error editing caption in back: {e}")
 
     elif data == "close":
         await callback_query.message.delete()
