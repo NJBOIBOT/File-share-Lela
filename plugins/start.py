@@ -519,17 +519,18 @@ async def handle_callback(client, callback_query: CallbackQuery):
        await callback_query.message.reply_photo(
            photo=QR_PIC,
            caption=(
-            "👋 <b>{name}🤗</b>\n"
-            "🎖️ <b>Available Plans 💸:</b>\n\n"
+            "👋 <b>Hᴇʟʟᴏ {name}🤗</b>\n\n"
+            "🎖️ <b>Aᴠᴀɪʟᴀʙʟᴇ Pʟᴀɴs 💸:</b>\n"
             "● 60 Rs  For 1 Month Prime Membership\n"
             "● 150 Rs  For 3 Months Prime Membership\n"
             "● 280 Rs  For 6 Months Prime Membership\n"
             "● 500 Rs  For 1 Year Prime Membership\n\n"
             "💵 <b>ASK UPI ID TO ADMIN AND PAY THERE</b> - @Premiumsubscriptiion_bot\n\n"
-            "♻️ After Payment You Will Get Instant Membership\n\n"
-            "‼️ Must Send Screenshot after payment & If anyone want custom time membership then ask admin"
+            "♻️ Aғᴛᴇʀ Pᴀʏᴍᴇɴᴛ Yᴏᴜ Wɪʟʟ Gᴇᴛ Iɴsᴛᴀɴᴛ Mᴇᴍʙᴇʀsʜɪᴘ\n\n"
+            "‼️ Mᴜsᴛ Sᴇɴᴅ Sᴄʀᴇᴇɴsʜᴏᴛ ᴀғᴛᴇʀ ᴘᴀʏᴍᴇɴᴛ & Iғ ᴀɴʏᴏɴᴇ ᴡᴀɴᴛ ᴄᴜsᴛᴏᴍ ᴛɪᴍᴇ ᴍᴇᴍʙᴇʀsʜɪᴘ ᴛʜᴇɴ ᴀsᴋ ᴀᴅᴍɪɴ"
         ).format(name=callback_query.from_user.first_name),
         reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("👨‍💻 Admin", url="https://t.me/Mrxonfiree")],
             [InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]
         ]),
         parse_mode=ParseMode.HTML
