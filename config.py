@@ -18,7 +18,7 @@ from logging.handlers import RotatingFileHandler
 #rohit_1888 on Tg
 #--------------------------------------------
 #Bot token @Botfather
-TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "7691635974:AAGnT8mlIkWN0ugMoiwwautaGMdxZJgb_FI")
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "")
 APP_ID = int(os.environ.get("APP_ID", "23915460")) #Your API ID from my.telegram.org
 API_HASH = os.environ.get("API_HASH", "dcfd41a6ebcc72a40270d84866aa212a") #Your API Hash from my.telegram.org
 #--------------------------------------------
@@ -29,7 +29,7 @@ OWNER_ID = int(os.environ.get("OWNER_ID", "7387638775")) # Owner id
 #--------------------------------------------
 PORT = os.environ.get("PORT", "8001")
 #--------------------------------------------
-DB_URI = os.environ.get("DATABASE_URL", "mongodb+srv://vlsyglm570:vlsyglm570@cluster0.fnndqmn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+DB_URI = os.environ.get("DATABASE_URL", "mongodb+srv://apricotdari:apricotdari@cluster0.phnz0xl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 DB_NAME = os.environ.get("DATABASE_NAME", "Cluooo")
 #--------------------------------------------
 FSUB_LINK_EXPIRY = int(os.getenv("FSUB_LINK_EXPIRY", "0"))  # 0 means no expiry
@@ -40,8 +40,8 @@ START_PIC = os.environ.get("START_PIC", "https://graph.org/file/eaf5ccbfd1c13a83
 FORCE_PIC = os.environ.get("FORCE_PIC", "https://graph.org/file/4d7b4a36b2b33bfc506bc-8ddf4edff3418500ea.jpg")
 
 #--------------------------------------------
-SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "pocolinks.com")
-SHORTLINK_API = os.environ.get("SHORTLINK_API", "381eb757bf5312567935fa3088be2ca57f547517")
+SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "linkshortify.com")
+SHORTLINK_API = os.environ.get("SHORTLINK_API", "c93dc9b7abfdd342a3ec2da878eb5ba03984f7ee")
 TUT_VID = os.environ.get("TUT_VID","https://t.me/Verify_Tutorials/4")
 SHORT_MSG = "<b>⌯ Hᴇʀᴇ ɪs Yᴏᴜʀ Dᴏᴡɴʟᴏᴀᴅ Lɪɴᴋ 🔗\n\n• Mᴜsᴛ Wᴀᴛᴄʜ Hᴏᴡ ᴛᴏ Oᴘᴇɴ, Bᴇғᴏʀᴇ Cʟɪᴄᴋɪɴɢ Oɴ Dᴏᴡɴʟᴏᴀᴅ ✅...</b>"
 
@@ -79,7 +79,7 @@ CMD_TXT = """<blockquote><b>» ᴀᴅᴍɪɴ ᴄᴏᴍᴍᴀɴᴅs:</b></blockqu
 <b>›› /count :</b> ᴄᴏᴜɴᴛ verifications
 """
 #--------------------------------------------
-CUSTOM_CAPTION = os.environ.get("CUSTOM_CAPTION", "<b>• ʙʏ @Nx_Universe</b>") #set your Custom Caption here, Keep None for Disable Custom Caption
+CUSTOM_CAPTION = os.environ.get("CUSTOM_CAPTION", "") #set your Custom Caption here, Keep None for Disable Custom Caption
 PROTECT_CONTENT = True if os.environ.get('PROTECT_CONTENT', "True") == "True" else False #set True if you want to prevent users from forwarding files from bot
 #--------------------------------------------
 #Set true if you want Disable your Channel Posts Share button
