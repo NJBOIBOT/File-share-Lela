@@ -516,13 +516,25 @@ async def handle_callback(client, callback_query: CallbackQuery):
         )
 
     elif data == "premium":
-        await callback_query.message.edit(
-            text="<b>Premium Plan:</b>\n\nUɴʟᴏᴄᴋ ᴀʟʟ ꜰᴇᴀᴛᴜʀᴇs ʙʏ ᴜᴘɢʀᴀᴅɪɴɢ ᴛᴏ ᴘʀᴇᴍɪᴜᴍ.\ncᴏɴᴛᴀᴄᴛ @Mrxonfiree ᴛᴏ ᴘᴜʀᴄʜᴀsᴇ.",
-            reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]]
-            ),
-            parse_mode=ParseMode.HTML
-        )
+       await callback_query.message.reply_photo(
+           photo=QR_PIC,
+           caption=(
+            "👋 <b>{name}🤗</b>\n"
+            "🎖️ <b>Available Plans 💸:</b>\n\n"
+            "● 60 Rs  For 1 Month Prime Membership\n"
+            "● 150 Rs  For 3 Months Prime Membership\n"
+            "● 280 Rs  For 6 Months Prime Membership\n"
+            "● 500 Rs  For 1 Year Prime Membership\n\n"
+            "💵 <b>ASK UPI ID TO ADMIN AND PAY THERE</b> - @Premiumsubscriptiion_bot\n\n"
+            "♻️ After Payment You Will Get Instant Membership\n\n"
+            "‼️ Must Send Screenshot after payment & If anyone want custom time membership then ask admin"
+        ).format(name=callback_query.from_user.first_name),
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]
+        ]),
+        parse_mode=ParseMode.HTML
+       )
+
 
     elif data == "back":
         try:
