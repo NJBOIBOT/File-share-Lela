@@ -537,8 +537,8 @@ async def handle_callback(client, callback_query: CallbackQuery):
             reply_markup=start_keyboard(),
             parse_mode=ParseMode.HTML
            )
-    except Exception as e:
-        print(f"Error editing caption in back: {e}")
+        except Exception as e:
+             print(f"Error editing caption in back: {e}")
 
     elif data == "close":
         await callback_query.message.delete()
