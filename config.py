@@ -37,7 +37,7 @@ BAN_SUPPORT = os.environ.get("BAN_SUPPORT", "https://t.me/unfiltered_stuf")
 TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "200"))
 #--------------------------------------------
 START_PIC = os.environ.get("START_PIC", "https://graph.org/file/eaf5ccbfd1c13a83424b8-35fc8ad476186eaa17.jpg")
-FORCE_PIC = os.environ.get("FORCE_PIC", "https://graph.org/file/6ca3f5fbea4b23953551a-e34001d5846b1d7300.jpg")
+FORCE_PIC = os.environ.get("FORCE_PIC", "https://graph.org/file/4d7b4a36b2b33bfc506bc-8ddf4edff3418500ea.jpg")
 
 #--------------------------------------------
 SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "pocolinks.com")
@@ -45,7 +45,7 @@ SHORTLINK_API = os.environ.get("SHORTLINK_API", "381eb757bf5312567935fa3088be2ca
 TUT_VID = os.environ.get("TUT_VID","https://t.me/Verify_Tutorials/4")
 SHORT_MSG = "<b>⌯ Hᴇʀᴇ ɪs Yᴏᴜʀ Dᴏᴡɴʟᴏᴀᴅ Lɪɴᴋ🔗\nMᴜsᴛ Wᴀᴛᴄʜ Hᴏᴡ ᴛᴏ Oᴘᴇɴ, Bᴇғᴏʀᴇ Cʟɪᴄᴋɪɴɢ Oɴ Dᴏᴡɴʟᴏᴀᴅ ✅...</b>"
 
-SHORTENER_PIC = os.environ.get("SHORTENER_PIC", "https://graph.org/file/4d7b4a36b2b33bfc506bc-8ddf4edff3418500ea.jpg")
+SHORTENER_PIC = os.environ.get("SHORTENER_PIC", "https://graph.org/file/02f9805767ff14fe92f76-198b707828528b69df.jpg")
 #--------------------------------------------
 
 #--------------------------------------------
@@ -92,7 +92,7 @@ USER_REPLY_TEXT = "ʙᴀᴋᴋᴀ ! ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴍʏ ꜱᴇɴᴘ
 
 OWNER_TAG = os.environ.get("OWNER_TAG", "Mrxonfiree")
 UPI_ID = os.environ.get("UPI_ID", "@Premiumsubscriptiion_bot")
-QR_PIC = os.environ.get("QR_PIC", "https://envs.sh/i2k.jpg")
+QR_PIC = os.environ.get("QR_PIC", "https://graph.org/file/6ca3f5fbea4b23953551a-e34001d5846b1d7300.jpg")
 SCREENSHOT_URL = os.environ.get("SCREENSHOT_URL", f"t.me/Premiumsubscriptiion_bot")
 #--------------------------------------------
 #Time and its price
