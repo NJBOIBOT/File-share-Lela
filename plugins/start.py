@@ -30,6 +30,24 @@ from helper_func import *
 from database.database import *
 from database.db_premium import *
 
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
+# Step 1: Define a reusable keyboard
+def start_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton('🤤 Jᴏɪɴ Aᴅᴜʟᴛ Hᴜʙ', url='https://t.me/+oOvo2Un_OC4xNWIx')],
+        [
+            InlineKeyboardButton('🍿 Mᴏᴠɪᴇ ɢʀᴏᴜᴘ', url='https://t.me/MovieRequestGroupNj'),
+            InlineKeyboardButton('🤖 ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ', url='https://t.me/unfiltered_stuf')
+        ],
+        [
+            InlineKeyboardButton('💁‍♀️ ʜᴇʟᴘ', callback_data='help'),
+            InlineKeyboardButton('😊 ᴀʙᴏᴜᴛ', callback_data='about')
+        ],
+        [InlineKeyboardButton("🚀 Pʀᴇᴍɪᴜᴍ", callback_data='premium')],
+        [InlineKeyboardButton("❌ Cʟᴏsᴇ", callback_data='close')]
+    ])
+
 
 BAN_SUPPORT = f"{BAN_SUPPORT}"
 TUT_VID = f"{TUT_VID}"
@@ -510,27 +528,17 @@ async def handle_callback(client, callback_query: CallbackQuery):
         )
 
     elif data == "back":
-        await callback_query.message.edit(
-            text=START_MSG.format(
-                first=callback_query.from_user.first_name,
-                last=callback_query.from_user.last_name,
-                username='@' + callback_query.from_user.username if callback_query.from_user.username else None,
-                mention=callback_query.from_user.mention,
-                id=callback_query.from_user.id
-            ),
-            reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton('🤤 Jᴏɪɴ Aᴅᴜʟᴛ Hᴜʙ', url='https://t.me/+oOvo2Un_OC4xNWIx')],
-                [
-                    InlineKeyboardButton('🍿 Mᴏᴠɪᴇ ɢʀᴏᴜᴘ', url='https://t.me/MovieRequestGroupNj'),
-                    InlineKeyboardButton('🤖 ᴜᴘᴅᴀᴛᴇ ᴄʜᴀɴɴᴇʟ', url='https://t.me/unfiltered_stuf')
-                ],
-                [
-                    InlineKeyboardButton('💁‍♀️ ʜᴇʟᴘ', callback_data='help'),
-                    InlineKeyboardButton('😊 ᴀʙᴏᴜᴛ', callback_data='about')
-                ]
-            ]),
-            parse_mode=ParseMode.HTML
-        )
+    await callback_query.message.edit(
+        text=START_MSG.format(
+            first=callback_query.from_user.first_name,
+            last=callback_query.from_user.last_name,
+            username='@' + callback_query.from_user.username if callback_query.from_user.username else None,
+            mention=callback_query.from_user.mention,
+            id=callback_query.from_user.id
+        ),
+        reply_markup=start_keyboard(),
+        parse_mode=ParseMode.HTML
+    )
 
     elif data == "close":
         await callback_query.message.delete()
