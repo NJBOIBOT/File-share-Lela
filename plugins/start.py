@@ -517,7 +517,7 @@ async def handle_callback(client, callback_query: CallbackQuery):
 
     elif data == "premium":
         await callback_query.message.edit(
-              text="<b>Premium Plan:</b>\n\nUɴʟᴏᴄᴋ ᴀʟʟ ꜰᴇᴀᴛᴜʀᴇs ʙʏ ᴜᴘɢʀᴀᴅɪɴɢ ᴛᴏ ᴘʀᴇᴍɪᴜᴍ.\ncᴏɴᴛᴀᴄᴛ @Mrxonfiree ᴛᴏ ᴘᴜʀᴄʜᴀsᴇ.",
+            text="<b>Premium Plan:</b>\n\nUɴʟᴏᴄᴋ ᴀʟʟ ꜰᴇᴀᴛᴜʀᴇs ʙʏ ᴜᴘɢʀᴀᴅɪɴɢ ᴛᴏ ᴘʀᴇᴍɪᴜᴍ.\ncᴏɴᴛᴀᴄᴛ @Mrxonfiree ᴛᴏ ᴘᴜʀᴄʜᴀsᴇ.",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]]
             ),
@@ -526,19 +526,23 @@ async def handle_callback(client, callback_query: CallbackQuery):
 
     elif data == "back":
         try:
-            await callback_query.message.edit_caption(
-            caption=START_MSG.format(
-                first=callback_query.from_user.first_name,
-                last=callback_query.from_user.last_name,
-                username='@' + callback_query.from_user.username if callback_query.from_user.username else None,
-                mention=callback_query.from_user.mention,
-                id=callback_query.from_user.id
-            ),
-            reply_markup=start_keyboard(),
-            parse_mode=ParseMode.HTML
-           )
+            await callback_query.message.delete()
+
+            await client.send_photo(
+                chat_id=callback_query.from_user.id,
+                photo=START_PIC,
+                caption=START_MSG.format(
+                    first=callback_query.from_user.first_name,
+                    last=callback_query.from_user.last_name,
+                    username='@' + callback_query.from_user.username if callback_query.from_user.username else None,
+                    mention=callback_query.from_user.mention,
+                    id=callback_query.from_user.id
+                ),
+                reply_markup=start_keyboard(),
+                parse_mode=ParseMode.HTML
+            )
         except Exception as e:
-             print(f"Error editing caption in back: {e}")
+            print(f"Error sending fresh start message on back: {e}")
 
     elif data == "close":
         await callback_query.message.delete()
