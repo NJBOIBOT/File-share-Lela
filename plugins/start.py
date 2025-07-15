@@ -520,7 +520,7 @@ async def handle_callback(client, callback_query: CallbackQuery):
 
     elif data == "premium":
         await callback_query.message.edit(
-            text="<b>Premium Plan:</b>\n\nUɴʟᴏᴄᴋ ᴀʟʟ ꜰᴇᴀᴛᴜʀᴇs ʙʏ ᴜᴘɢʀᴀᴅɪɴɢ ᴛᴏ ᴘʀᴇᴍɪᴜᴍ.\ncᴏɴᴛᴀᴄᴛ @Mrxonfiree ᴛᴏ ᴘᴜʀᴄʜᴀsᴇ.",
+              text="<b>Premium Plan:</b>\n\nUɴʟᴏᴄᴋ ᴀʟʟ ꜰᴇᴀᴛᴜʀᴇs ʙʏ ᴜᴘɢʀᴀᴅɪɴɢ ᴛᴏ ᴘʀᴇᴍɪᴜᴍ.\ncᴏɴᴛᴀᴄᴛ @Mrxonfiree ᴛᴏ ᴘᴜʀᴄʜᴀsᴇ.",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⟵ Bᴀᴄᴋ", callback_data="back")]]
             ),
@@ -528,7 +528,7 @@ async def handle_callback(client, callback_query: CallbackQuery):
         )
 
     elif data == "back":
-    await callback_query.message.edit(
+        await callback_query.message.edit(
         text=START_MSG.format(
             first=callback_query.from_user.first_name,
             last=callback_query.from_user.last_name,
