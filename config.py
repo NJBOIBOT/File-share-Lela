@@ -43,7 +43,7 @@ FORCE_PIC = os.environ.get("FORCE_PIC", "https://graph.org/file/4d7b4a36b2b33bfc
 SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "pocolinks.com")
 SHORTLINK_API = os.environ.get("SHORTLINK_API", "381eb757bf5312567935fa3088be2ca57f547517")
 TUT_VID = os.environ.get("TUT_VID","https://t.me/Verify_Tutorials/4")
-SHORT_MSG = "<b>⌯ Hᴇʀᴇ ɪs Yᴏᴜʀ Dᴏᴡɴʟᴏᴀᴅ Lɪɴᴋ🔗\nMᴜsᴛ Wᴀᴛᴄʜ Hᴏᴡ ᴛᴏ Oᴘᴇɴ, Bᴇғᴏʀᴇ Cʟɪᴄᴋɪɴɢ Oɴ Dᴏᴡɴʟᴏᴀᴅ ✅...</b>"
+SHORT_MSG = "<b>⌯ Hᴇʀᴇ ɪs Yᴏᴜʀ Dᴏᴡɴʟᴏᴀᴅ Lɪɴᴋ 🔗\n\n• Mᴜsᴛ Wᴀᴛᴄʜ Hᴏᴡ ᴛᴏ Oᴘᴇɴ, Bᴇғᴏʀᴇ Cʟɪᴄᴋɪɴɢ Oɴ Dᴏᴡɴʟᴏᴀᴅ ✅...</b>"
 
 SHORTENER_PIC = os.environ.get("SHORTENER_PIC", "https://graph.org/file/02f9805767ff14fe92f76-198b707828528b69df.jpg")
 #--------------------------------------------
