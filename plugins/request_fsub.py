@@ -218,6 +218,33 @@ async def list_force_sub_channels(client: Client, message: Message):
 
     await temp.edit(result, disable_web_page_preview=True, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Close ✖️", callback_data="close")]]))
 
+@Bot.on_callback_query(filters.regex(r"^rfs_ch_(\-?\d+)$"))
+async def toggle_fsub_mode(client: Client, query: CallbackQuery):
+    channel_id = int(query.data.split("_", 2)[2])
+
+    # Get current mode from DB
+    current_mode = await db.get_channel_mode(channel_id)
+    new_mode = "off" if current_mode == "on" else "on"
+
+    # Update DB with toggled mode
+    await db.set_channel_mode(channel_id, new_mode)
+
+    try:
+        chat = await client.get_chat(channel_id)
+        title = chat.title
+    except:
+        title = str(channel_id)
+
+    await query.answer("Force-Sub mode toggled.")
+    await query.edit_message_text(
+        f"✅ Force-Sub mode for <b>{title}</b> is now <code>{new_mode.upper()}</code>\n\nSend /fsub_mode again to manage more.",
+        parse_mode=ParseMode.HTML,
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("Back ↩️", callback_data="fsub_mode")],
+            [InlineKeyboardButton("Close ✖️", callback_data="close")]
+        ])
+    )
+
 # Don't Remove Credit @CodeFlix_Bots, @rohit_1888
 # Ask Doubt on telegram @CodeflixSupport
 #
